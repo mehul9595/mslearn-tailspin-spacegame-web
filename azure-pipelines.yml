@@ -20,6 +20,7 @@ variables:
   buildConfiguration: 'Release'
   wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
   dotnetSDKVersion: '3.1.100'
+  System.Debug: true
 
 steps:
 - task: UseDotNet@2
@@ -88,7 +89,7 @@ steps:
     azureSubscription: 'tailspindotnetcore - Azure'
     appType: 'webAppLinux'
     WebAppName: 'tailspindotnetcore'
-    packageForLinux: '$(Build.SourcesDirectory)/Drop/$(buildConfiguration)/TailSpin.SpaceGame.Web.zip'
+    packageForLinux: '$(Build.SourcesDirectory)/TailSpin.SpaceGame.Web.zip'
     RuntimeStack: 'DOTNETCORE|3.0'
     StartupCommand: 'dotnet run --project Tailspin.SpaceGame.Web'
 

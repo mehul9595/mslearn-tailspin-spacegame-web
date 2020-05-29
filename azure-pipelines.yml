@@ -82,18 +82,18 @@ steps:
     codeCoverageTool: 'cobertura'
     summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  condition: succeeded()
-
-
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'tailspindotnetcore - Azure'
     appType: 'webAppLinux'
     WebAppName: 'tailspindotnetcore'
-    packageForLinux: '$(System.ArtifactsDirectory)/Drop/$(buildConfiguration)/TailSpin.SpaceGame.Web.zip'
+    packageForLinux: '$(Build.SourcesDirectory)/Drop/$(buildConfiguration)/TailSpin.SpaceGame.Web.zip'
     RuntimeStack: 'DOTNETCORE|3.0'
     StartupCommand: 'dotnet run --project Tailspin.SpaceGame.Web'
-    
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  condition: succeeded()
+
+

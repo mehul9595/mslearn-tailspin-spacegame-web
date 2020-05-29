@@ -88,22 +88,22 @@ steps:
   condition: succeeded()
   name: drop
 
-- task: DownloadBuildArtifacts@0
-  inputs:
-    buildType: 'current'
-    downloadType: 'single'
-    downloadPath: '$(System.ArtifactsDirectory)'
-    artifactName: drop
+# - task: DownloadBuildArtifacts@0
+#   inputs:
+#     buildType: 'current'
+#     downloadType: 'single'
+#     downloadPath: '$(System.ArtifactsDirectory)'
+#     artifactName: drop
  
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'tailspindotnetcore - Azure'
-    appType: 'webAppLinux'
-    WebAppName: 'tailspindotnetcore'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/Drop/Release/TailSpin.SpaceGame.Web.zip'
-    RuntimeStack: 'DOTNETCORE|3.0'
-    StartupCommand: 'dotnet run --project Tailspin.SpaceGame.Web'
+# - task: AzureRmWebAppDeployment@4
+#   inputs:
+#     ConnectionType: 'AzureRM'
+#     azureSubscription: 'tailspindotnetcore - Azure'
+#     appType: 'webAppLinux'
+#     WebAppName: 'tailspindotnetcore'
+#     packageForLinux: '$(System.DefaultWorkingDirectory)/Drop/Release/TailSpin.SpaceGame.Web.zip'
+#     RuntimeStack: 'DOTNETCORE|3.0'
+#     StartupCommand: 'dotnet run --project Tailspin.SpaceGame.Web'
 
 
 

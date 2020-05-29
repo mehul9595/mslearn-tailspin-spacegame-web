@@ -57,44 +57,51 @@ steps:
     custom: tool
     arguments: 'install --global dotnet-reportgenerator-globaltool'
 
-- template: templates/build.yml
-  parameters:
-    buildConfiguration: 'Debug'
+# - template: templates/build.yml
+#   parameters:
+#     buildConfiguration: 'Debug'
 
 - template: templates/build.yml
   parameters:
     buildConfiguration: 'Release'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Run unit tests - $(buildConfiguration)'
+# - task: DotNetCoreCLI@2
+#   displayName: 'Run unit tests - $(buildConfiguration)'
+#   inputs:
+#     command: 'test'
+#     arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+#     publishTestResults: true
+#     projects: '**/*.Tests.csproj'
+
+# - script: |
+#     reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines
+#   displayName: 'Create code coverage report'
+
+# - task: PublishCodeCoverageResults@1
+#   displayName: 'Publish code coverage report'
+#   inputs:
+#     codeCoverageTool: 'cobertura'
+#     summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  condition: succeeded()
+
+- task: DownloadBuildArtifacts@0
   inputs:
-    command: 'test'
-    arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
-    publishTestResults: true
-    projects: '**/*.Tests.csproj'
-
-- script: |
-    reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines
-  displayName: 'Create code coverage report'
-
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish code coverage report'
-  inputs:
-    codeCoverageTool: 'cobertura'
-    summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
-
+    buildType: 'current'
+    downloadType: 'single'
+    downloadPath: '$(System.ArtifactsDirectory)'
+ 
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'tailspindotnetcore - Azure'
     appType: 'webAppLinux'
     WebAppName: 'tailspindotnetcore'
-    packageForLinux: '$(Build.SourcesDirectory)/TailSpin.SpaceGame.Web.zip'
+    packageForLinux: '$(System.ArtifactsDirectory)/Release/TailSpin.SpaceGame.Web.zip'
     RuntimeStack: 'DOTNETCORE|3.0'
     StartupCommand: 'dotnet run --project Tailspin.SpaceGame.Web'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  condition: succeeded()
 
 

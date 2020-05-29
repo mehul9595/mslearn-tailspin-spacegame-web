@@ -101,7 +101,7 @@ steps:
     azureSubscription: 'tailspindotnetcore - Azure'
     appType: 'webAppLinux'
     WebAppName: 'tailspindotnetcore'
-    packageForLinux: '$(System.ArtifactsDirectory)/Drop/Release/TailSpin.SpaceGame.Web.zip'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/Drop/Release/TailSpin.SpaceGame.Web.zip'
     RuntimeStack: 'DOTNETCORE|3.0'
     StartupCommand: 'dotnet run --project Tailspin.SpaceGame.Web'
 
